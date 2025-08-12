@@ -1,101 +1,65 @@
 ﻿
 #include <iostream>
 #include<vector>
+#include<string>
+#include <cctype>
+#include<iomanip>
 
 using namespace std;
 
-int RandomNumber(int From, int To) {
-	return rand() % (To - From + 1) + From;
+void PrintMessage(string message) {
+	cout << message;
 }
 
-void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
-	for (int i = 0; i < Rows; i++)
-	{
-		for (int j = 0; j < Cols; j++)
-		{
-			arr[i][j] = RandomNumber(1, 1);
+char ReadChar(string message) {
 
-		}
-	}
+	cout << message;
+	char letter;
+	cin >> letter;
 
+	return letter;
 }
 
-void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+char InvertLetterCourse(char letter) {
 
-
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			printf(" %0*d   ", 2, arr[i][j]);
-			//cout << arr[i][j] << "    ";
-		}
-		cout << endl;
-	}
+	return isupper(letter) ? tolower(letter) : toupper(letter);
 
 }
-
-int SumOfMatrix(int arr[3][3], short Rows, short Cols) {
-
-	int sum = 0;
-
-	for (int i = 0; i < Rows; i++)
-	{
-		for (int j = 0; j < Cols; j++)
-		{
-			sum += arr[i][j];
-		}
+char InvertLetter(char letter) {
+	if (isupper(letter)) {
+		return tolower(letter);
 	}
-	return sum;
+	else if (islower(letter)) {
+		return toupper(letter);
+	}
+	else {
+		return letter;
+	}
 }
+char InvertLetterGPT(char letter) {
 
-//bool CompareTwoMatrices(int arr[3][3], int arr1[3][3], short Rows, short Cols) {
-//
-//	return (SumOfMatrix(arr, Rows, Cols) == SumOfMatrix(arr1, Rows, Cols));
-//
-//}
-
-
-bool CompareTwoMatrices(int arr[3][3], int arr1[3][3], short Rows, short Cols) {
-
-	for (int i = 0; i < Rows; i++)
-	{
-		for (int j = 0; j < Cols; j++)
-		{
-			if (arr[i][j] != arr1[i][j]) {
-				return false;
-			}
-		}
+	if (letter > 'A' && letter < 'Z') {
+		return letter = tolower(letter);
 	}
-	return true;
+	else if (letter >= 'a' && letter <= 'z') {
+		return toupper(letter);
+	}
+	else
+	{
+		return letter;
+	}
+
 }
 
 int main() {
 
-	srand((unsigned)time(NULL));
-	int arr[3][3];
-	int arr1[3][3];
+	cout<<InvertLetter(ReadChar("Please Enter a Letter : "))<<endl;
 
-	FillMatrixWithRandomNumbers(arr, 3, 3);
-	cout << "\n matrix1 :" << endl;
-	PrintMatrix(arr, 3, 3);
-
-	FillMatrixWithRandomNumbers(arr1, 3, 3);
-	cout << "\n matrix2 :" << endl;
-	PrintMatrix(arr1, 3, 3);
-
-	if (!CompareTwoMatrices(arr, arr1, 3, 3)) {
-		cout << "No : martices are NOT Equal..";
-	}
-	else
-	{
-		cout << "Yes : Martices are equal..";
-	}
-
+	PrintMessage("Char After Inverting case: \n");
 }
 
-namespace Problems {
 
+namespace Problems {
 	class Problem1 {
 		int RandomNumber(int From, int To) {
 			return rand() % (To - From + 1) + From;
@@ -721,7 +685,7 @@ namespace Problems {
 			cout << "\nSum of matrix is :" << SumOfMatrix(arr, 3, 3) << endl;
 		}
 	};
-	class Problem11ComapreAndTypical12{
+	class Problem11ComapreAndTypical12 {
 		int RandomNumber(int From, int To) {
 			return rand() % (To - From + 1) + From;
 		}
@@ -810,6 +774,1130 @@ namespace Problems {
 				cout << "Yes : Martices are equal..";
 			}
 
+		}
+	};
+	class Problem13 {
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(0, 1);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		int SumOfMatrix(int arr[3][3], short Rows, short Cols) {
+
+			int sum = 0;
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					sum += arr[i][j];
+				}
+			}
+			return sum;
+		}
+
+		bool IsIdenticalTwoMatrices(int arr[3][3], short Rows, short Cols) {
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					if (i == j && arr[i][j] != 1) {
+						return false;
+					}
+					else if (i != j && arr[i][j] != 0)
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+			int arr[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
+
+			int tries = 0;
+			while (true) {
+
+				tries++;
+
+				FillMatrixWithRandomNumbers(arr, 3, 3);
+
+				cout << "\nMatrix #" << tries << " :" << endl;
+				PrintMatrix(arr, 3, 3);
+
+
+				if (IsIdenticalTwoMatrices(arr, 3, 3)) {
+					cout << "Yes: Matrix is Identical!" << endl;
+					break;
+				}
+				else {
+					cout << "No: Matrix is NOT Identical..." << endl;
+				}
+			}
+		}
+
+	};
+	class Problem14 {
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(0, 1);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		bool IsScalarTwoMatrices(int arr[3][3], short Rows, short Cols) {
+
+			int firstElement = arr[0][0];
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+
+					/*
+					0,0	   0.1   0.2
+					{ 8  ,  0  ,  0}
+
+					{ 0  ,  8  ,  0}
+
+					{ 0  ,  0  ,  8}
+
+					*/
+					if (i == j && arr[i][j] != firstElement) {
+						return false;
+					}
+					else if (i != j && arr[i][j] != 0)
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+			int arr[3][3] = { {2,0,0},{0,2,0},{0,0,2} };
+
+			//FillMatrixWithRandomNumbers(arr1, 3, 3);
+
+			PrintMatrix(arr, 3, 3);
+
+
+			if (IsScalarTwoMatrices(arr, 3, 3)) {
+				cout << "Yes: Matrix is Scalar!" << endl;
+			}
+			else {
+				cout << "No: Matrix is NOT Scalar!..." << endl;
+			}
+
+		}
+	};
+	class Problem15 {
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(0, 1);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = 0; j < 3; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		int CountNumberInMatrx(int arr[3][3], int& userInput, short Rows, short Cols) {
+
+			int ctr = 0;
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					if (arr[i][j] == userInput) {
+						ctr++;
+					}
+				}
+			}
+			return ctr;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			int arr[3][3];
+
+			int userInput = ReadNumber("Please Enter a Number.. from 1 - 100 : ");
+
+			FillMatrixWithRandomNumbers(arr, 3, 3);
+
+			PrintMatrix(arr, 3, 3);
+
+			cout << "Number " << userInput << " count in matrix is = " << CountNumberInMatrx(arr, userInput, 3, 3) << endl;
+
+		}
+	};
+	class Problem16 {
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(0, 1);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		int CountNumberInMatrx(int arr[3][3], int userInput, short Rows, short Cols) {
+
+			int ctr = 0;
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					if (arr[i][j] == userInput) {
+						ctr++;
+					}
+				}
+			}
+			return ctr;
+		}
+
+		bool IsSparceMatrix(int arr[3][3], short Rows, short Cols) {
+
+			return(CountNumberInMatrx(arr, 0, 3, 3) >= ceil((float)(Rows * Cols) / 2));
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			int arr[3][3];
+
+			FillMatrixWithRandomNumbers(arr, 3, 3);
+
+			PrintMatrix(arr, 3, 3);
+
+			if (!IsSparceMatrix(arr, 3, 3)) {
+				cout << "No: It's NOT Sparce";
+			}
+			else
+			{
+				cout << "Yes: It is Sparce";
+			}
+		}
+
+	};
+	class Problem17 {
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(1, 100);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		bool IsNumberInMatrix(int arr[3][3], int userNumber, short Rows, short Cols) {
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					if (arr[i][j] == userNumber) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			int arr[3][3];
+			int userInput;
+			do {
+				userInput = ReadNumber("Please Enter Number between 1 - 100: ");
+				FillMatrixWithRandomNumbers(arr, 3, 3);
+				PrintMatrix(arr, 3, 3);
+
+				if (!IsNumberInMatrix(arr, userInput, 3, 3)) {
+					cout << "No: It's NOT there. Try again.\n";
+				}
+				else {
+					cout << "Yes: It is there!\n";
+					break;
+				}
+			} while (true);
+		}
+	};
+	class Problem18 {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(1, 10);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		bool IsNumberInMatrix(int arr[3][3], int userNumber, short Rows, short Cols) {
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					if (arr[i][j] == userNumber) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		void PrintIntersectedNumbersInTwoMatrices(int arr[3][3], int arr1[3][3], short Rows, short Cols) {
+
+			int Number = 0;
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int k = 0; k < Cols; k++)
+				{
+					Number = arr[i][k];
+					if (IsNumberInMatrix(arr1, Number, Rows, Cols)) {
+						cout << setw(3) << Number << "	";
+					}
+				}
+			}
+
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			int arr[3][3];
+			int arr1[3][3];
+
+			PrintMessage("Matrix1 :");
+			FillMatrixWithRandomNumbers(arr, 3, 3);
+			PrintMatrix(arr, 3, 3);
+
+			PrintMessage("Matrix2 :");
+			FillMatrixWithRandomNumbers(arr1, 3, 3);
+			PrintMatrix(arr1, 3, 3);
+
+			PrintIntersectedNumbersInTwoMatrices(arr, arr1, 3, 3);
+
+		}
+	};
+	class Problem19MyCode {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		int RandomNumber(int From, int To) {
+			return rand() % (To - From + 1) + From;
+		}
+
+		void FillMatrixWithRandomNumbers(int arr[3][3], short Rows, short Cols) {
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					arr[i][j] = RandomNumber(1, 100);
+
+				}
+			}
+
+		}
+
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					printf(" %0*d   ", 2, arr[i][j]);
+					//cout << arr[i][j] << "    ";
+				}
+				cout << endl;
+			}
+
+		}
+
+		void InsertNumberOfMatrixToVector(int arr[3][3], vector<int>& MatrixElement, int Rows, int Cols) {
+
+			for (int i = 0; i < Rows; i++)
+			{
+				for (int j = 0; j < Cols; j++)
+				{
+					MatrixElement.push_back(arr[i][j]);
+				}
+			}
+		}
+
+		int GetMaxOfVector(vector<int>& MatrixElement, int Rows, int Cols) {
+
+			int length = Rows * Cols;
+			int maxNumber = MatrixElement[0];
+			for (int i = 1; i < length; i++)
+			{
+				//if (MatrixElement[i] >= maxNumber) {
+				//	MatrixElement[i] = maxNumber;
+				//}
+				if (MatrixElement[i] > maxNumber) {
+					maxNumber = MatrixElement[i];
+				}
+
+			}
+
+		}
+
+		int GetMinOfVector(vector<int>& MatrixElement, int Rows, int Cols) {
+
+			int length = Rows * Cols;
+			int minNumber = MatrixElement[0];
+			for (int i = 1; i < length; i++)
+			{
+				//if (minNumber <= MatrixElement[i]) {
+				//	minNumber =MatrixElement[i];
+				//}
+				if (MatrixElement[i] < minNumber) {
+					minNumber = MatrixElement[i];
+				}
+			}
+			return minNumber;
+
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			int arr[3][3];
+
+			PrintMessage("Matrix1 :");
+			FillMatrixWithRandomNumbers(arr, 3, 3);
+			PrintMatrix(arr, 3, 3);
+
+			vector<int> insertAllElementFromMatrix;
+
+			InsertNumberOfMatrixToVector(arr, insertAllElementFromMatrix, 3, 3);
+
+			cout << "Maximum  Number is : " << GetMaxOfVector(insertAllElementFromMatrix, 3, 3) << endl;
+			cout << "Minimum Number is : " << GetMinOfVector(insertAllElementFromMatrix, 3, 3) << endl;
+
+		}
+	};
+	class Problem19CourseApproch {
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+			for (short i = 0; i < Rows; i++) {
+				for (short j = 0; j < Cols; j++) {
+					cout << setw(3) << arr[i][j] << "     ";
+				}
+				cout << "\n";
+			}
+		}
+
+		int MinNumberInMatrix(int Matrix1[3][3], short Rows, short Cols) {
+			int Min = Matrix1[0][0];
+			for (short i = 0; i < Rows; i++) {
+				for (short j = 0; j < Cols; j++) {
+					if (Matrix1[i][j] < Min) {
+						Min = Matrix1[i][j];
+					}
+				}
+			}
+			return Min;
+		}
+
+		int MaxNumberInMatrix(int Matrix1[3][3], short Rows, short Cols) {
+			int Max = Matrix1[0][0];
+			for (short i = 0; i < Rows; i++) {
+				for (short j = 0; j < Cols; j++) {
+					if (Matrix1[i][j] > Max) {
+						Max = Matrix1[i][j];
+					}
+				}
+			}
+			return Max;
+		}
+
+		int main() {
+			int Matrix1[3][3] = { {77, 5, 12}, {22, 20, 6}, {14, 3, 9} };
+
+			cout << "\nMatrix1:\n";
+			PrintMatrix(Matrix1, 3, 3);
+
+			cout << "\nMinimum Number is: " << MinNumberInMatrix(Matrix1, 3, 3);
+			cout << "\nMax Number is: " << MaxNumberInMatrix(Matrix1, 3, 3);
+
+			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem20 {
+		void PrintMatrix(int arr[3][3], short Rows, short Cols) {
+			for (short i = 0; i < Rows; i++) {
+				for (short j = 0; j < Cols; j++) {
+					cout << setw(3) << arr[i][j] << "     ";
+				}
+				cout << "\n";
+			}
+		}
+
+		int IsPalindromeMatrix(int Matrix1[3][3], short Rows, short Cols) {
+			for (short i = 0; i < Rows; i++) {
+				for (short j = 0; j < Cols / 2; j++) {
+					if (Matrix1[i][j] != Matrix1[i][Cols - 1 - j]) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		int main() {
+			int Matrix1[3][3] = { {1, 2, 1}, {5, 5, 5}, {7, 3, 7} };
+
+			cout << "\nMatrix1:\n";
+			PrintMatrix(Matrix1, 3, 3);
+
+			if (IsPalindromeMatrix(Matrix1, 3, 3)) {
+				cout << "\nYes: Matrix is Palindrome\n";
+			}
+			else {
+				cout << "\nNo: Matrix is NOT Palindrome\n";
+			}
+
+			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem21 {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		void GenerateFibonacciSeriesOfN(int Number) {
+			int previousNum1 = 1, previousNum2 = 1, currentNum;
+
+			if (Number >= 1) cout << previousNum1 << "  ";
+			if (Number >= 2) cout << previousNum2 << "  ";
+
+			for (int i = 3; i <= Number; i++) {
+				currentNum = previousNum1 + previousNum2;
+				cout << currentNum << "  ";
+				previousNum1 = previousNum2;
+				previousNum2 = currentNum;
+			}
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			GenerateFibonacciSeriesOfN(ReadNumber("Please Enter a Number : "));
+
+		}
+	};
+	class problem22 {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		void GenerateFibonacciSeriesOfNUsingRecursion(int Number, int Prev1, int Prev2) {
+
+			int fibNumber = 0;
+
+			if (Number > 0)
+			{
+				fibNumber = Prev1 + Prev2;
+				Prev2 = Prev1;
+				Prev1 = fibNumber;
+				cout << fibNumber << "  ";
+				GenerateFibonacciSeriesOfNUsingRecursion(Number - 1, Prev1, Prev2);
+			}
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			GenerateFibonacciSeriesOfNUsingRecursion(ReadNumber("Please Enter a Number : "), 0, 1);
+
+		}
+	};
+	class Problem23 {
+		string ReadString(string message) {
+
+			cout << message;
+
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		void PrintFirstLetterOfWord(string sentance) {
+			//Mohammad Abu hammad :M A h
+			// Mohammad Abu hammad : M A h
+			//    :   
+
+			if (sentance.empty())
+				return;
+
+			bool isFirstLetler = true;
+
+			for (int i = 0; i < sentance.length(); i++)
+			{
+				if (sentance[i] != ' ' && isFirstLetler) {
+					cout << sentance[i] << endl;
+				}
+				isFirstLetler = (sentance[i] == ' ' ? true : false);
+			}
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			PrintFirstLetterOfWord(ReadString("Please Enter a Sentance : "));
+
+		}
+	};
+	class Problem24Mycode {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		string ReadString(string message) {
+
+			cout << message;
+
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		void UpperFirstLetters(string sentence) {
+			bool isStartOfWord = true;
+
+			for (int i = 0; i < sentence.length(); i++) {
+				if (sentence[i] == ' ') {
+					isStartOfWord = true;
+				}
+				else if (isStartOfWord) {
+
+					sentence[i] = toupper(sentence[i]);
+
+					cout << sentence[i] << " ";
+
+					isStartOfWord = false;
+				}
+			}
+			cout << endl;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			UpperFirstLetters(ReadString("Please Enter a Sentance : "));
+
+		}
+	};
+	class Problem24 {
+		void PrintMessage(string message) {
+			cout << message << endl;
+		}
+		int ReadNumber(string message) {
+
+			int num = 0;
+			cout << message;
+
+
+			while (true) {
+				if (cin >> num)
+					return num;
+				else
+				{
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << "Invalid Number, Enter a valid One" << endl;
+				}
+			}
+			return num;
+		}
+
+		string ReadString(string message) {
+
+			cout << message;
+
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		string UpperFirstLetters(string sentence) {
+			bool isStartOfWord = true;
+
+			for (int i = 0; i < sentence.length(); i++) {
+				if (sentence[i] == ' ') {
+					isStartOfWord = true;
+				}
+				else if (isStartOfWord) {
+
+					sentence[i] = toupper(sentence[i]);
+					isStartOfWord = false;
+				}
+			}
+			return sentence;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			cout << UpperFirstLetters(ReadString("Please Enter a Sentance : ")) << endl;
+
+		}
+	};
+	class Problem25 {
+		string ReadString(string message) {
+
+			cout << message;
+
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		string LowerFirstLetters(string sentence) {
+			bool isStartOfWord = true;
+
+			for (int i = 0; i < sentence.length(); i++) {
+				if (sentence[i] == ' ') {
+					isStartOfWord = true;
+				}
+				else if (isStartOfWord) {
+
+					sentence[i] = tolower(sentence[i]);
+					isStartOfWord = false;
+				}
+			}
+			return sentence;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			cout << LowerFirstLetters(ReadString("Please Enter a Sentance : ")) << endl;
+
+		};
+	};
+	class Problem26 {
+		string ReadString(string message) {
+
+			cout << message;
+
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		string PrintLowerLetters(string sentence) {
+
+			for (int i = 0; i < sentence.length(); i++) {
+
+				sentence[i] = tolower(sentence[i]);
+			}
+			return sentence;
+		}
+
+		string PrintUpperLetters(string sentence) {
+
+			for (int i = 0; i < sentence.length(); i++) {
+
+				sentence[i] = toupper(sentence[i]);
+			}
+			return sentence;
+		}
+
+		int main() {
+
+			srand((unsigned)time(NULL));
+
+			PrintMessage("Please Enter a Sentance : ");
+			string userInput = ReadString(" ");
+
+			PrintMessage("\nString After Lower : ");
+			cout << PrintLowerLetters(userInput) << endl;
+			PrintMessage("\nString After Upper : ");
+			cout << PrintUpperLetters(userInput) << endl;
+
+		}
+	};
+	class problem27{
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char letter;
+			cin >> letter;
+
+			return letter;
+		}
+
+		char InvertLetterCourse(char letter) {
+
+			return isupper(letter) ? tolower(letter) : toupper(letter);
+
+		}
+		char InvertLetter(char letter) {
+			if (isupper(letter)) {
+				return tolower(letter);
+			}
+			else if (islower(letter)) {
+				return toupper(letter);
+			}
+			else {
+				return letter;
+			}
+		}
+		char InvertLetterGPT(char letter) {
+
+			if (letter > 'A' && letter < 'Z') {
+				return letter = tolower(letter);
+			}
+			else if (letter >= 'a' && letter <= 'z') {
+				return toupper(letter);
+			}
+			else
+			{
+				return letter;
+			}
+
+		}
+
+		int main() {
+
+			cout << InvertLetter(ReadChar("Please Enter a Letter : ")) << endl;
+
+			PrintMessage("Char After Inverting case: \n");
 		}
 	};
 }
