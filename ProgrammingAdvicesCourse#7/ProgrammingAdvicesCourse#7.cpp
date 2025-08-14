@@ -1,5 +1,4 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include<vector>
 #include<string>
 #include <cctype>
@@ -7,57 +6,54 @@
 
 using namespace std;
 
-void PrintMessage(string message) {
-	cout << message;
-}
-
-char ReadChar(string message) {
+string ReadString(string message ) {
 
 	cout << message;
-	char letter;
-	cin >> letter;
+	string input;
 
-	return letter;
-}
+	getline(cin, input);
 
-char InvertLetterCourse(char letter) {
-
-	return isupper(letter) ? tolower(letter) : toupper(letter);
+	return input;
 
 }
-char InvertLetter(char letter) {
-	if (isupper(letter)) {
-		return tolower(letter);
-	}
-	else if (islower(letter)) {
-		return toupper(letter);
-	}
-	else {
-		return letter;
-	}
-}
-char InvertLetterGPT(char letter) {
 
-	if (letter > 'A' && letter < 'Z') {
-		return letter = tolower(letter);
-	}
-	else if (letter >= 'a' && letter <= 'z') {
-		return toupper(letter);
-	}
-	else
+string TrimLeft(string userInput) {
+
+	for (short i = 0; i < userInput.length(); i++)
 	{
-		return letter;
-	}
+		if (userInput[i] != ' ') {
+			return userInput.substr(i, userInput.length() - i);
+		}
 
+	}
+	return userInput;
+}
+
+string TrimRight(string userInput) {
+	for (int i = userInput.length() - 1; i >= 0; i--) {
+		if (userInput[i] != ' ') {
+			return userInput.substr(0, i + 1);
+		}
+	}
+	return "";
+}
+
+
+string Trim(string userInput) {
+	return(TrimLeft(TrimRight(userInput)));
 }
 
 int main() {
 
-	cout<<InvertLetter(ReadChar("Please Enter a Letter : "))<<endl;
+	string userInput = "      Mohammad Abu Hammad      ";
 
-	PrintMessage("Char After Inverting case: \n");
+	cout << "\nString     = " << userInput;
+	cout << "\n\nTrim Left  = " << TrimLeft(userInput);
+	cout << "\nTrim Right = " << TrimRight(userInput);
+	cout << "\nTrim       = " << Trim(userInput);
+	system("pause>0");
+	return 0;
 }
-
 
 namespace Problems {
 	class Problem1 {
@@ -1805,6 +1801,10 @@ namespace Problems {
 		};
 	};
 	class Problem26 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
 		string ReadString(string message) {
 
 			cout << message;
@@ -1848,7 +1848,7 @@ namespace Problems {
 
 		}
 	};
-	class problem27{
+	class problem27 {
 		void PrintMessage(string message) {
 			cout << message;
 		}
@@ -1898,6 +1898,575 @@ namespace Problems {
 			cout << InvertLetter(ReadChar("Please Enter a Letter : ")) << endl;
 
 			PrintMessage("Char After Inverting case: \n");
+		}
+	};
+	class Problem28 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char letter;
+			cin >> letter;
+
+			return letter;
+		}
+		string ReadString(string message) {
+			cout << message;
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		char InvertLetterGPT(char letter) {
+
+			if (letter > 'A' && letter < 'Z') {
+				return letter = tolower(letter);
+			}
+			else if (letter >= 'a' && letter <= 'z') {
+				return toupper(letter);
+			}
+			else
+			{
+				return letter;
+			}
+
+		}
+
+		string InvertAllLetter(string sentance) {
+
+			for (int i = 0; i < sentance.length(); i++)
+			{
+				sentance[i] = InvertLetterGPT(sentance[i]); // focus on the sentance[i] =  to update the letter
+			}
+			return sentance;
+		}
+
+		int main() {
+
+			string sentance = InvertAllLetter(ReadString("Please Enter a String : "));
+
+			PrintMessage("String After Inverting all Lettes Case : \n");
+			PrintMessage(sentance);
+		}
+	};
+	class Problem29MyCode {
+		string ReadString(string message) {
+			cout << message;
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		void CountUpperAndLowerLetters(string sentence, int& upperCtr, int& lowerCtr) {
+			upperCtr = 0;
+			lowerCtr = 0;
+
+			for (char& c : sentence) {
+				if (isupper(c))
+					upperCtr++;
+				else if (islower(c))
+					lowerCtr++;
+			}
+		}
+
+		int main() {
+			string sentence = ReadString("Please Enter Your String? ");
+			int upper = 0, lower = 0;
+
+			CountUpperAndLowerLetters(sentence, upper, lower);
+
+			cout << "\nString Length = " << sentence.length() << endl;
+			cout << "Capital Letters Count = " << upper << endl;
+			cout << "Small Letters Count = " << lower << endl;
+
+			return 0;
+		}
+	};
+	class Problem29CourseApproach {
+		string ReadString(string message) {
+			cout << message;
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		enum enWhatToCount { SmallLetters = 0, CaptialLetters = 1, All = 3 };
+
+		short CountLetters(string sentence, enWhatToCount WhatToCount = enWhatToCount::All) {
+
+			if (WhatToCount == enWhatToCount::All)
+				return sentence.length();
+
+			short ctr = 0;
+
+			for (short i = 0; i < sentence.length(); i++)
+			{
+				if (WhatToCount == enWhatToCount::CaptialLetters && isupper(sentence[i]))
+					ctr++;
+
+				if (WhatToCount == enWhatToCount::SmallLetters && islower(sentence[i]))
+					ctr++;
+			}
+			return ctr;
+		}
+
+		int main() {
+			string sentence = ReadString("Please Enter Your String? ");
+
+			cout << "\nString length = " << CountLetters(sentence);
+			cout << "\nCapital Letter Count = " << CountLetters(sentence, enWhatToCount::CaptialLetters);
+			cout << "\nSmall Letter Count = " << CountLetters(sentence, enWhatToCount::SmallLetters);
+			return 0;
+		}
+
+	};
+	class Problem30 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char input;
+			cin >> input;
+
+			return input;
+		}
+
+		string ReadString(string message) {
+			cout << message;
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		enum enWhatToCount { UpperCase = 1, LowerCase = 2, Letter = 3, CountAll = 4 };
+
+
+		short CountChar(string sentance, char userInput) {
+
+			short ctr = 0;
+			for (int i = 0; i < sentance.length(); i++)
+			{
+				if (sentance[i] == userInput) {
+					ctr++;
+				}
+			}
+			return ctr;
+		}
+
+		int main() {
+			string sentence = ReadString("Please Enter Your String? ");
+
+			char userInput = ReadChar("Please Enter A Character : ");
+
+			cout << "Letter '" << userInput << "' Count = " << CountChar(sentence, userInput) << endl;
+
+			return 0;
+		}
+	};
+	class Problem31 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char input;
+			cin >> input;
+
+			return input;
+		}
+
+		string ReadString(string message) {
+			cout << message;
+			string userInput;
+
+			getline(cin, userInput);
+
+			return userInput;
+		}
+
+		char InvertLetterCourse(char letter) {
+
+			return isupper(letter) ? tolower(letter) : toupper(letter);
+		}
+
+		short CountMatchCaseChar(string sentance, char userInput, bool MatchCase = true) {
+
+			short ctr = 0;
+			for (int i = 0; i < sentance.length(); i++)
+			{
+				if (MatchCase) {
+					if (sentance[i] == userInput)
+						ctr++;
+				}
+				else if (tolower(sentance[i]) == tolower(userInput))
+				{
+					ctr++;
+				}
+			}
+			return ctr;
+		}
+
+		int main() {
+			string sentence = ReadString("Please Enter Your String? ");
+
+			char userInput = ReadChar("Please Enter A Character : ");
+
+			cout << "Letter \'" << userInput << "\' Count = " << CountMatchCaseChar(sentence, userInput) << endl;
+			cout << "Letter \'" << userInput << "' "
+				<< "Or \'" << InvertLetterCourse(userInput) << "\'"
+				<< "Count = " << CountMatchCaseChar(sentence, userInput, false);
+
+			return 0;
+		}
+	};
+	class Problem32 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char input;
+			cin >> input;
+
+			return input;
+		}
+
+
+		bool CheckVowelOrNot(char userInput, string vowels) {
+
+			userInput = tolower(userInput);
+			for (int i = 0; i < vowels.length(); i++)
+			{
+				if (userInput == vowels[i]) {
+					return true;
+				}
+			}
+			return false;
+		}
+		bool IsVowel(char Ch1) {
+			Ch1 = tolower(Ch1);
+			return (Ch1 == 'a' || Ch1 == 'e' || Ch1 == 'i' || Ch1 == 'o' || Ch1 == 'u');
+		}
+		int main() {
+
+			char userInput = ReadChar("Please Enter A Character : ");
+
+			string vowels = "aeiou";
+
+			if (!CheckVowelOrNot(userInput, vowels)) {
+				cout << " No Letter \'" << userInput << "\' is't vowel";
+			}
+			else
+			{
+				cout << " Yes Letter \'" << userInput << "\' is vowel";
+			}
+
+			return 0;
+		}
+	};
+	class Problem33 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char input;
+			cin >> input;
+
+			return input;
+		}
+
+		bool IsVowel(char Ch1) {
+			Ch1 = tolower(Ch1);
+			return (Ch1 == 'a' || Ch1 == 'e' || Ch1 == 'i' || Ch1 == 'o' || Ch1 == 'u');
+		}
+
+		short CountAllVowels(string userInput) {
+
+			short ctr = 0;
+
+			for (int i = 0; i < userInput.length(); i++)
+			{
+				if (IsVowel(userInput[i])) {
+					ctr++;
+				}
+			}
+			return ctr;
+		}
+
+		int main() {
+
+			string userInput = ReadString("Please Enter A Character : ");
+
+			cout << "Number of vowels is : " << CountAllVowels(userInput) << endl;;
+
+			return 0;
+		}
+	};
+	class Problem34 {
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+
+		char ReadChar(string message) {
+
+			cout << message;
+			char input;
+			cin >> input;
+
+			return input;
+		}
+
+		bool IsVowel(char Ch1) {
+			Ch1 = tolower(Ch1);
+			return (Ch1 == 'a' || Ch1 == 'e' || Ch1 == 'i' || Ch1 == 'o' || Ch1 == 'u');
+		}
+
+		void CountAllVowels(string userInput) {
+
+			short ctr = 0;
+
+			for (int i = 0; i < userInput.length(); i++)
+			{
+				if (IsVowel(userInput[i])) {
+					cout << userInput[i] << " ";
+				}
+			}
+		}
+
+		int main() {
+
+			string userInput = ReadString("Please Enter A Character : ");
+
+			cout << "Vowels in string are : " << endl;;
+			CountAllVowels(userInput);
+			return 0;
+		}
+	};
+	class Problem35MyCode {
+
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+
+		void PrintEachWord(string userInput) {
+			bool lastWasSpace = true;
+
+			for (short i = 0; i < userInput.length(); i++) {
+				if (userInput[i] == ' ') {
+					if (!lastWasSpace) {
+						cout << endl;
+						lastWasSpace = true;
+					}
+				}
+				else {
+					cout << userInput[i];
+					lastWasSpace = false;
+				}
+			}
+
+			if (!lastWasSpace) {
+				cout << endl;
+			}
+		}
+
+		int main() {
+
+			string userInput = ReadString("Please Enter A Character : ");
+
+			PrintEachWord(userInput);
+
+			return 0;
+		}
+
+	};
+	class Problem35CourseApproach {
+
+	};
+	class Problem36 {
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+
+		short PrintEachWord(string userInput) {
+
+			short pos = 0;
+
+			string spaces = " ";
+
+			string word;
+
+			short ctr = 0;
+
+			while ((pos = userInput.find(spaces)) != string::npos) {
+
+				word = userInput.substr(0, pos);
+				if (!word.empty()) {
+					ctr++;
+				}
+				userInput.erase(0, pos + spaces.length());
+			}
+			if (!word.empty()) {
+				ctr++;
+			}
+			return ctr;
+		}
+
+		int main() {
+
+			string userInput = ReadString("Please Enter A Character : ");
+
+			cout << "The number of words in your string is : " << PrintEachWord(userInput) << endl;;
+
+			return 0;
+		}
+	};
+	class Problem37 {
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+
+		vector<string> Split(string userInput, string spaces) {
+
+			vector<string>vWords;
+
+			short pos = 0;
+
+			string word;
+
+			while ((pos = userInput.find(spaces)) != string::npos) {
+
+				word = userInput.substr(0, pos);
+				if (!word.empty()) {
+					vWords.push_back(word);
+				}
+				userInput.erase(0, pos + spaces.length());
+			}
+			if (!word.empty()) {
+				vWords.push_back(word);
+			}
+			return vWords;
+		}
+
+
+		int main() {
+
+			string userInput = ReadString("Please Enter A Character : ");
+
+			vector<string> words;
+
+			words = Split(userInput, " ");
+
+			cout << "Tokens =  " << words.size() << endl;;
+
+			for (auto& word : words)
+			{
+				cout << word << endl;
+			}
+
+			return 0;
+		}
+	};
+	class Problem38{
+		string TrimLeft(string userInput) {
+
+			for (short i = 0; i < userInput.length(); i++)
+			{
+				if (userInput[i] != ' ') {
+					return userInput.substr(i, userInput.length() - i);
+				}
+
+			}
+			return userInput;
+		}
+
+		string TrimRight(string userInput) {
+			for (int i = userInput.length() - 1; i >= 0; i--) {
+				if (userInput[i] != ' ') {
+					return userInput.substr(0, i + 1);
+				}
+			}
+			return "";
+		}
+
+
+		string Trim(string userInput) {
+			return(TrimLeft(TrimRight(userInput)));
+		}
+
+		int main() {
+
+			string userInput = "      Mohammad Abu Hammad      ";
+
+			cout << "\nString     = " << userInput;
+			cout << "\n\nTrim Left  = " << TrimLeft(userInput);
+			cout << "\nTrim Right = " << TrimRight(userInput);
+			cout << "\nTrim       = " << Trim(userInput);
+			system("pause>0");
+			return 0;
 		}
 	};
 }
