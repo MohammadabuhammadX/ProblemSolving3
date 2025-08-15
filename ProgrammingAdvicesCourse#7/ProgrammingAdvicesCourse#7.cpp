@@ -6,7 +6,7 @@
 
 using namespace std;
 
-string ReadString(string message ) {
+string ReadString(string message) {
 
 	cout << message;
 	string input;
@@ -16,41 +16,72 @@ string ReadString(string message ) {
 	return input;
 
 }
+void PrintMessage(string message) {
+	cout << message;
+}
 
-string TrimLeft(string userInput) {
+vector<string> Split(string userInput, string spaces) {
 
-	for (short i = 0; i < userInput.length(); i++)
+	vector<string>vWords;
+
+	short pos = 0;
+
+	string word;
+
+	while ((pos = userInput.find(spaces)) != string::npos) {
+
+		word = userInput.substr(0, pos);
+		if (!word.empty()) {
+			vWords.push_back(word);
+		}
+		userInput.erase(0, pos + spaces.length());
+	}
+	if (!userInput.empty()) {
+		vWords.push_back(userInput);
+	}
+	return vWords;
+}
+
+string ReverseString(string S1) {
+
+	vector<string> vString = Split(S1, " "); 
+
+	string S2 = "";
+
+	vector<string>::iterator iter = vString.end();
+
+	while (iter != vString.begin())
 	{
-		if (userInput[i] != ' ') {
-			return userInput.substr(i, userInput.length() - i);
-		}
-
+		--iter;
+		S2 += *iter + " ";
 	}
-	return userInput;
+
+
+	return S2.substr(0, S2.length() - 1);
+
 }
 
-string TrimRight(string userInput) {
-	for (int i = userInput.length() - 1; i >= 0; i--) {
-		if (userInput[i] != ' ') {
-			return userInput.substr(0, i + 1);
-		}
+string ReverseWordsInString(string S1) {
+
+	vector<string> vString = Split(S1 , " ");
+	string S2 = "";
+
+	for (int i = vString.size() - 1; i >= 0; --i) {
+		S2 += vString[i] + " ";
 	}
-	return "";
-}
 
+	if (!S2.empty()) {
+		S2.pop_back(); 
+	}
 
-string Trim(string userInput) {
-	return(TrimLeft(TrimRight(userInput)));
+	return S2;
 }
 
 int main() {
 
-	string userInput = "      Mohammad Abu Hammad      ";
+	PrintMessage("Using Arrays:\n");
+	cout << ReverseWordsInString(ReadString("Please Enter A String : ")) << endl;
 
-	cout << "\nString     = " << userInput;
-	cout << "\n\nTrim Left  = " << TrimLeft(userInput);
-	cout << "\nTrim Right = " << TrimRight(userInput);
-	cout << "\nTrim       = " << Trim(userInput);
 	system("pause>0");
 	return 0;
 }
@@ -557,7 +588,7 @@ namespace Problems {
 			PrintMatrix(arrMultiply, 3, 3);
 		}
 	};
-	class Promlem9 {
+	class Problem9 {
 		int RandomNumber(int From, int To) {
 			return rand() % (To - From + 1) + From;
 		}
@@ -1560,7 +1591,7 @@ namespace Problems {
 
 		}
 	};
-	class problem22 {
+	class Problem22 {
 		void PrintMessage(string message) {
 			cout << message << endl;
 		}
@@ -1848,7 +1879,7 @@ namespace Problems {
 
 		}
 	};
-	class problem27 {
+	class Problem27 {
 		void PrintMessage(string message) {
 			cout << message;
 		}
@@ -2430,7 +2461,7 @@ namespace Problems {
 			return 0;
 		}
 	};
-	class Problem38{
+	class Problem38 {
 		string TrimLeft(string userInput) {
 
 			for (short i = 0; i < userInput.length(); i++)
@@ -2465,6 +2496,98 @@ namespace Problems {
 			cout << "\n\nTrim Left  = " << TrimLeft(userInput);
 			cout << "\nTrim Right = " << TrimRight(userInput);
 			cout << "\nTrim       = " << Trim(userInput);
+			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem39{
+		string JoinString(vector<string>& vWord, string spaces) {
+
+			if (vWord.empty())
+				return "";
+
+			string fullString;
+
+			for (auto& word : vWord)
+			{
+				fullString += word + spaces;
+			}
+
+			return fullString.substr(0, fullString.length() - spaces.length());
+		}
+
+
+		int main() {
+
+			vector<string> vWords;
+
+			vWords.push_back("Mohammad");
+			vWords.push_back("Ahmad");
+			vWords.push_back("Ali");
+			vWords.push_back("abuhammad");
+
+			cout << JoinString(vWords, "###") << endl;
+
+			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem40{
+		void PrintMessage(string message) {
+			cout << message;
+		}
+		string JoinString(vector<string>& vWord, string spaces) {
+
+			if (vWord.empty())
+				return "";
+
+			string fullString;
+
+			for (auto& word : vWord)
+			{
+				fullString += word + spaces;
+			}
+
+			//return fullString.substr(0, fullString.length() - spaces.length());
+			return fullString;
+
+		}
+
+		string JoinString(string arr[4], int length, string spaces) {
+
+			if (length == 0)
+				return "";
+
+
+			string fullString;
+
+
+			for (int i = 0; i < length; i++)
+			{
+				fullString += arr[i] + spaces;
+			}
+
+			return fullString.substr(0, fullString.length() - spaces.length());
+		}
+
+		int main() {
+
+			vector<string> vWords;
+
+			vWords.push_back("Mohammad");
+			vWords.push_back("Ahmad");
+			vWords.push_back("Ali");
+			vWords.push_back("abuhammad");
+
+			string words[] = { "MohammadArray" ,"AhmadArray" , " AliArray","AbuhammadArray" };
+			short length = 4;
+
+			PrintMessage("Using Vectors");
+			cout << JoinString(vWords, "###") << endl;
+
+			PrintMessage("Using Arrays");
+			cout << JoinString(words, length, "###") << endl;
+
 			system("pause>0");
 			return 0;
 		}
