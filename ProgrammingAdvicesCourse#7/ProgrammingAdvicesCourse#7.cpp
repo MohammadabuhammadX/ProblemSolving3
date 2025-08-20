@@ -3,88 +3,126 @@
 #include<string>
 #include <cctype>
 #include<iomanip>
+#include<ctime>
+#include<fstream>
+
 
 using namespace std;
+const string ClientFileName = "Clients.txt";
 
-string ReadString(string message) {
+struct sClient
+{
+	string AccountNumber;
+	string PinCode;
+	string Name;
+	string Phone;
+	double AccountBalance;
+};
 
-	cout << message;
-	string input;
-
-	getline(cin, input);
-
-	return input;
-
-}
-void PrintMessage(string message) {
-	cout << message;
-}
-
-vector<string> Split(string userInput, string spaces) {
-
-	vector<string>vWords;
-
+vector<string> SplitString(string S1, string Delim)
+{
+	vector<string> vString;
 	short pos = 0;
+	string sWord;
 
-	string word;
-
-	while ((pos = userInput.find(spaces)) != string::npos) {
-
-		word = userInput.substr(0, pos);
-		if (!word.empty()) {
-			vWords.push_back(word);
-		}
-		userInput.erase(0, pos + spaces.length());
-	}
-	if (!userInput.empty()) {
-		vWords.push_back(userInput);
-	}
-	return vWords;
-}
-
-string ReverseString(string S1) {
-
-	vector<string> vString = Split(S1, " "); 
-
-	string S2 = "";
-
-	vector<string>::iterator iter = vString.end();
-
-	while (iter != vString.begin())
+	while ((pos = S1.find(Delim)) != std::string::npos)
 	{
-		--iter;
-		S2 += *iter + " ";
+		sWord = S1.substr(0, pos);
+		if (sWord != "")
+		{
+			vString.push_back(sWord);
+		}
+		S1.erase(0, pos + Delim.length());
 	}
 
+	if (S1 != "")
+	{
+		vString.push_back(S1);
+	}
 
-	return S2.substr(0, S2.length() - 1);
-
+	return vString;
 }
 
-string ReverseWordsInString(string S1) {
+sClient ConvertLinetoRecord(string Line, string Seperator = "#//")
+{
+	sClient Client;
+	vector<string> vClientData;
+	vClientData = SplitString(Line, Seperator);
 
-	vector<string> vString = Split(S1 , " ");
-	string S2 = "";
+	Client.AccountNumber = vClientData[0];
+	Client.PinCode = vClientData[1];
+	Client.Name = vClientData[2];
+	Client.Phone = vClientData[3];
+	Client.AccountBalance = stod(vClientData[4]);
 
-	for (int i = vString.size() - 1; i >= 0; --i) {
-		S2 += vString[i] + " ";
-	}
-
-	if (!S2.empty()) {
-		S2.pop_back(); 
-	}
-
-	return S2;
+	return Client;
 }
 
-int main() {
+vector<sClient> LoadCleintsDataFromFile(string FileName)
+{
+	vector<sClient> vClients;
+	fstream MyFile;
+	MyFile.open(FileName, ios::in);
 
-	PrintMessage("Using Arrays:\n");
-	cout << ReverseWordsInString(ReadString("Please Enter A String : ")) << endl;
+	if (MyFile.is_open())
+	{
+		string Line;
+		sClient Client;
 
+		while (getline(MyFile, Line))
+		{
+			Client = ConvertLinetoRecord(Line);
+			vClients.push_back(Client);
+		}
+
+		MyFile.close();
+	}
+
+	return vClients;
+}
+
+void PrintClientRecord(sClient Client)
+{
+	cout << "| " << setw(15) << left << Client.AccountNumber;
+	cout << "| " << setw(10) << left << Client.PinCode;
+	cout << "| " << setw(40) << left << Client.Name;
+	cout << "| " << setw(12) << left << Client.Phone;
+	cout << "| " << setw(12) << left << Client.AccountBalance;
+}
+
+void PrintAllClientsData(vector<sClient> vClients)
+{
+	cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
+	cout << "\n_______________________________________________________";
+	cout << "_________________________________________\n" << endl;
+
+	cout << "| " << left << setw(15) << "Account Number";
+	cout << "| " << left << setw(10) << "Pin Code";
+	cout << "| " << left << setw(40) << "Client Name";
+	cout << "| " << left << setw(12) << "Phone";
+	cout << "| " << left << setw(12) << "Balance";
+	cout << "\n_______________________________________________________";
+	cout << "_________________________________________\n" << endl;
+
+	for (sClient Client : vClients)
+	{
+		PrintClientRecord(Client);
+		cout << endl;
+	}
+
+	cout << "\n_______________________________________________________";
+	cout << "_________________________________________\n" << endl;
+}
+
+int main()
+{
+	vector<sClient> vClients = LoadCleintsDataFromFile(ClientFileName);
+	PrintAllClientsData(vClients);
 	system("pause>0");
+
 	return 0;
 }
+
 
 namespace Problems {
 	class Problem1 {
@@ -2500,7 +2538,7 @@ namespace Problems {
 			return 0;
 		}
 	};
-	class Problem39{
+	class Problem39 {
 		string JoinString(vector<string>& vWord, string spaces) {
 
 			if (vWord.empty())
@@ -2532,7 +2570,7 @@ namespace Problems {
 			return 0;
 		}
 	};
-	class Problem40{
+	class Problem40 {
 		void PrintMessage(string message) {
 			cout << message;
 		}
@@ -2589,6 +2627,685 @@ namespace Problems {
 			cout << JoinString(words, length, "###") << endl;
 
 			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem41 {
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		vector<string> Split(string userInput, string spaces) {
+
+			vector<string>vWords;
+
+			short pos = 0;
+
+			string word;
+
+			while ((pos = userInput.find(spaces)) != string::npos) {
+
+				word = userInput.substr(0, pos);
+				if (!word.empty()) {
+					vWords.push_back(word);
+				}
+				userInput.erase(0, pos + spaces.length());
+			}
+			if (!userInput.empty()) {
+				vWords.push_back(userInput);
+			}
+			return vWords;
+		}
+
+		string ReverseString(string S1) {
+
+			vector<string> vString = Split(S1, " ");
+
+			string S2 = "";
+
+			vector<string>::iterator iter = vString.end();
+
+			while (iter != vString.begin())
+			{
+				--iter;
+				S2 += *iter + " ";
+			}
+
+
+			return S2.substr(0, S2.length() - 1);
+
+		}
+
+		string ReverseWordsInString(string S1) {
+
+			vector<string> vString = Split(S1, " ");
+			string S2 = "";
+
+			for (int i = vString.size() - 1; i >= 0; --i) {
+				S2 += vString[i] + " ";
+			}
+
+			if (!S2.empty()) {
+				S2.pop_back();
+			}
+
+			return S2;
+		}
+
+		int main() {
+
+			PrintMessage("Using Arrays:\n");
+			cout << ReverseWordsInString(ReadString("Please Enter A String : ")) << endl;
+
+			system("pause>0");
+			return 0;
+		}
+	};
+	class Problem42 {
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		string ReplaceWordsUsingBuiltInFunction(string userInput, string StringToReplace, string sReplacesTo) {
+
+			short pos = userInput.find(StringToReplace);
+
+			while (pos != string::npos) {
+
+				userInput = userInput.replace(pos, StringToReplace.length(), sReplacesTo);
+
+				pos = userInput.find(StringToReplace);
+			}
+			return userInput;
+		}
+
+		int main() {
+
+			string S1 = "\n\nWelcome to Jordan , Jordan is a nice country \n";
+			string StringToReplace = "Jordan";
+			string sReplacesTo = "USA";
+			PrintMessage("Origial String : \n");
+			PrintMessage(S1);
+
+			PrintMessage("String After Replace : ");
+			cout << ReplaceWordsUsingBuiltInFunction(S1, StringToReplace, sReplacesTo) << endl;;
+
+			return 0;
+		}
+	};
+	class Problem43 {
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+		void PrintMessage(string message) {
+			cout << message;
+		}
+
+		vector<string> Split(string userInput, string spaces) {
+
+			vector<string>vWords;
+
+			short pos = 0;
+
+			string word;
+
+			while ((pos = userInput.find(spaces)) != string::npos) {
+
+				word = userInput.substr(0, pos);
+				if (!word.empty()) {
+					vWords.push_back(word);
+				}
+				userInput.erase(0, pos + spaces.length());
+			}
+			if (!userInput.empty()) {
+				vWords.push_back(userInput);
+			}
+			return vWords;
+		}
+
+		string JoinString(vector<string>& vWord, string spaces) {
+
+			if (vWord.empty())
+				return "";
+
+			string fullString;
+
+			for (auto& word : vWord)
+			{
+				fullString += word + spaces;
+			}
+
+			return fullString.substr(0, fullString.length() - spaces.length());
+		}
+
+		string LowerAllLetters(string sentence) {
+
+			for (int i = 0; i < sentence.length(); i++) {
+
+				sentence[i] = tolower(sentence[i]);
+			}
+			return sentence;
+		}
+
+		string ReplaceWordsUsingSplit(string s1, string StringToReplace, string sReplaceTo, bool MatchCase = true) {
+			vector<string> vWords = Split(s1, " ");
+
+			for (auto& word : vWords) {
+				if (MatchCase) {
+
+					if (word == StringToReplace) {
+						word = sReplaceTo;
+					}
+				}
+				else
+				{
+					if (LowerAllLetters(word) == LowerAllLetters(StringToReplace)) {
+						word = sReplaceTo;
+					}
+				}
+			}
+			return JoinString(vWords, " ");
+		}
+
+		int main() {
+
+			string S1 = "\n\nWelcome to Jordan , Jordan is a nice country \n";
+			string StringToReplace = "jordan";
+			string sReplacesTo = "USA";
+
+			cout << "\nOrigial String : \n" << S1;
+
+			cout << "\n\nReplace with match case : \n";
+			cout << "\n" << ReplaceWordsUsingSplit(S1, StringToReplace, sReplacesTo);
+			cout << "\n\nReplace with don't match case : ";
+			cout << ReplaceWordsUsingSplit(S1, StringToReplace, sReplacesTo, false) << endl;;
+			return 0;
+		}
+	};
+	class Problem44 {
+		string RemoveAllPauncationMark(string userInput) {
+
+			string result = " ";
+
+			for (short i = 0; i < userInput.length(); i++)
+			{
+				if (!ispunct(userInput[i])) {
+					result += userInput[i];
+				}
+			}
+
+			return result;
+
+		}
+
+		int main() {
+
+			string S1 = "\n\nWelcome to Jordan , Jordan is a nice country; it's amazing. \n";
+
+			cout << "Original String: " << S1 << endl;
+			cout << "\n\nPauncuation Removed: \n";
+			cout << RemoveAllPauncationMark(S1) << endl;
+			return 0;
+		}
+	};
+	class Problem45 {
+		struct sClinetData
+		{
+			string AccountNumber;
+			string PinCode;
+			string Name;
+			string PhoneNumber;
+			float AccountBalance;
+		};
+
+		void ReadClinetData(sClinetData& clientData) {
+			cout << "Enter Account Number : ";
+			cin >> clientData.AccountNumber;
+
+			cout << "Enter PinCode : ";
+			cin >> clientData.PinCode;
+
+			cin.ignore();
+			cout << "Enter Your Name : ";
+			getline(cin, clientData.Name);
+
+			cout << "Enter Phone Number : ";
+			cin >> clientData.PhoneNumber;
+
+			cout << "Enter Your Account Balance : ";
+			cin >> clientData.AccountBalance;
+		}
+
+		string ConvertRecordToLine(sClinetData clientData) {
+			string Spaces = "#//";
+			string fullString = "";
+
+			fullString += clientData.AccountNumber + Spaces;
+			fullString += clientData.PinCode + Spaces;
+			fullString += clientData.Name + Spaces;
+			fullString += clientData.PhoneNumber + Spaces;
+			fullString += to_string(clientData.AccountBalance);
+
+			return fullString;
+		}
+
+		int main() {
+
+			sClinetData client;
+
+			ReadClinetData(client);
+
+			cout << "\nClient Record: " << ConvertRecordToLine(client) << endl;
+
+			return 0;
+		}
+	};
+	class Problem46 {
+		struct sClinetData
+		{
+			string AccountNumber;
+			string PinCode;
+			string Name;
+			string PhoneNumber;
+			double AccountBalance;
+		};
+
+		vector<string> Split(string record, string separter) {
+
+			vector<string> vRecordSections;
+			string word = " ";
+			short pos = 0;
+
+			while ((pos = record.find(separter)) != string::npos)
+			{
+				word = record.substr(0, pos);
+
+				if (!word.empty()) {
+					vRecordSections.push_back(word);
+				}
+				record.erase(0, pos + separter.length());
+
+			}
+			if (!record.empty()) {
+				vRecordSections.push_back(record);
+			}
+			return vRecordSections;
+		}
+
+		sClinetData ConvertLineToRecord(string Line, string Seperater = "#//") {
+
+			sClinetData client;
+			vector<string> vClientData = Split(Line, Seperater);
+
+			client.AccountNumber = vClientData[0];
+			client.PinCode = vClientData[1];
+			client.Name = vClientData[2];
+			client.PhoneNumber = vClientData[3];
+			client.AccountBalance = stod(vClientData[4]);
+
+			return client;
+		}
+
+		void PrintClientRecord(sClinetData client) {
+
+			cout << "\n\nThe following is the extracted client record:\n";
+			cout << "Account Number	: " << client.AccountNumber << endl;
+			cout << "PinCode		: " << client.PinCode << endl;
+			cout << "Name		: " << client.Name << endl;
+			cout << "Phone		: " << client.PhoneNumber << endl;
+			cout << "Balance		: " << fixed << setprecision(2) << client.AccountBalance << endl;
+
+		}
+
+		int main() {
+			sClinetData client;
+			string Record = "a150#//1234#//Mohammad Abuhammad#//0798989898#//5000.000000";
+			cout << "\nLine Record is :\n";
+			cout << Record;
+
+			client = ConvertLineToRecord(Record);
+
+			PrintClientRecord(client);
+
+			return 0;
+		}
+
+	};
+	class Problem47 {
+		struct sClinetData
+		{
+			string AccountNumber;
+			string PinCode;
+			string Name;
+			string PhoneNumber;
+			double AccountBalance;
+		};
+
+		sClinetData ReadClinetData() {
+			sClinetData clientData;
+			cout << "Enter Account Number : ";
+			getline(cin >> ws, clientData.AccountNumber);
+
+			cout << "Enter PinCode : ";
+			getline(cin, clientData.PinCode);
+
+			cout << "Enter Your Name : ";
+			getline(cin, clientData.Name);
+
+			cout << "Enter Phone Number : ";
+			getline(cin, clientData.PhoneNumber);
+
+			cout << "Enter Your Account Balance : ";
+			cin >> clientData.AccountBalance;
+
+			return clientData;
+		}
+
+		string ConvertRecordToLine(sClinetData clientData) {
+			string Spaces = "#//";
+			string fullString = "";
+
+			fullString += clientData.AccountNumber + Spaces;
+			fullString += clientData.PinCode + Spaces;
+			fullString += clientData.Name + Spaces;
+			fullString += clientData.PhoneNumber + Spaces;
+			fullString += to_string(clientData.AccountBalance);
+
+			return fullString;
+		}
+
+		void AddDateLineToFile(string FileName, string stDataLine) {
+
+			fstream MyFile;
+
+			MyFile.open(FileName, ios::out | ios::app);
+
+			if (MyFile.is_open()) {
+				MyFile << stDataLine << endl;
+
+				MyFile.close();
+			}
+
+		}
+
+		void AddNewClient() {
+			sClinetData client;
+			client = ReadClinetData();
+			AddDateLineToFile(ClientFileName, ConvertRecordToLine(client));
+		}
+
+		void AddClients() {
+
+			char AddMore = 'Y';
+
+			do
+			{
+
+				system("cls");
+				cout << "Adding new client:\n\n";
+				AddNewClient();
+
+				cout << "\nClient Added Successfully, do you want to add more clients ? Y/N";
+				cin >> AddMore;
+
+			} while (toupper(AddMore) == 'Y');
+
+		}
+
+		int main() {
+
+			AddClients();
+
+			return 0;
+		}
+	};
+	class Problem48MyCode {
+		const string ClientFileName = "Clients.txt";
+
+		string ReadString(string message) {
+
+			cout << message;
+			string input;
+
+			getline(cin, input);
+
+			return input;
+
+		}
+		void PrintMessage(string message) {
+			cout << message;
+		}
+		struct sClinetData
+		{
+			string AccountNumber;
+			string PinCode;
+			string Name;
+			string PhoneNumber;
+			double AccountBalance;
+		};
+
+		void LoadDataFromFileToVector(string FileUrl, vector<string>& vFileContent) {
+
+			fstream MyFile;
+			MyFile.open(FileUrl, ios::in);
+
+			if (MyFile.is_open()) {
+
+				string Line;
+
+				while (getline(MyFile, Line)) {
+					if (!Line.empty())
+						vFileContent.push_back(Line);
+				}
+				MyFile.close();
+			}
+			else
+			{
+				cout << "Failed to oper file : " << FileUrl << endl;
+			}
+		}
+
+		vector<string> Split(string S1, string Separator) {
+			vector<string> Record;
+			size_t pos = 0;
+			string word;
+
+			while ((pos = S1.find(Separator)) != string::npos) {
+				word = S1.substr(0, pos);
+				if (!word.empty())
+					Record.push_back(word);
+				S1.erase(0, pos + Separator.length());
+			}
+
+			if (!S1.empty())
+				Record.push_back(S1);
+
+			return Record;
+		}
+
+
+		void PrintRecords(vector<string>& vFileContent) {
+			cout << "\nClient List (" << vFileContent.size() << ") Client(s).\n\n";
+
+			cout << "-------------------------------------------------------------------------------------------\n";
+			cout << "| " << setw(15) << left << "Account Number"
+				<< " | " << setw(10) << left << "Pin Code"
+				<< " | " << setw(25) << left << "Client Name"
+				<< " | " << setw(12) << left << "Phone"
+				<< " | " << setw(10) << left << "Balance"
+				<< " |\n";
+			cout << "-------------------------------------------------------------------------------------------\n";
+
+			for (auto& record : vFileContent) {
+				vector<string> fields = Split(record, "#//");
+				sClinetData client;
+				client.AccountNumber = fields[0];
+				client.PinCode = fields[1];
+				client.Name = fields[2];
+				client.PhoneNumber = fields[3];
+				client.AccountBalance = stod(fields[4]);
+
+				cout << "| " << setw(15) << left << client.AccountNumber
+					<< " | " << setw(10) << left << client.PinCode
+					<< " | " << setw(25) << left << client.Name
+					<< " | " << setw(12) << left << client.PhoneNumber
+					<< " | " << setw(10) << right << fixed << setprecision(2) << client.AccountBalance
+					<< " |\n";
+			}
+			cout << "-------------------------------------------------------------------------------------------\n";
+		}
+
+		int main() {
+
+			vector<string> vFileContent;
+
+
+			LoadDataFromFileToVector(ClientFileName, vFileContent);
+
+			PrintRecords(vFileContent);
+			return 0;
+		}
+	};
+	class Problem48CourseApproach {
+		const string ClientsFileName = "Clients.txt";
+
+		struct sClient
+		{
+			string AccountNumber;
+			string PinCode;
+			string Name;
+			string Phone;
+			double AccountBalance;
+		};
+
+		vector<string> SplitString(string S1, string Delim)
+		{
+			vector<string> vString;
+			short pos = 0;
+			string sWord;
+
+			while ((pos = S1.find(Delim)) != std::string::npos)
+			{
+				sWord = S1.substr(0, pos);
+				if (sWord != "")
+				{
+					vString.push_back(sWord);
+				}
+				S1.erase(0, pos + Delim.length());
+			}
+
+			if (S1 != "")
+			{
+				vString.push_back(S1);
+			}
+
+			return vString;
+		}
+
+		sClient ConvertLinetoRecord(string Line, string Seperator = "#//#")
+		{
+			sClient Client;
+			vector<string> vClientData;
+			vClientData = SplitString(Line, Seperator);
+
+			Client.AccountNumber = vClientData[0];
+			Client.PinCode = vClientData[1];
+			Client.Name = vClientData[2];
+			Client.Phone = vClientData[3];
+			Client.AccountBalance = stod(vClientData[4]);
+
+			return Client;
+		}
+
+		vector<sClient> LoadCleintsDataFromFile(string FileName)
+		{
+			vector<sClient> vClients;
+			fstream MyFile;
+			MyFile.open(FileName, ios::in);
+
+			if (MyFile.is_open())
+			{
+				string Line;
+				sClient Client;
+
+				while (getline(MyFile, Line))
+				{
+					Client = ConvertLinetoRecord(Line);
+					vClients.push_back(Client);
+				}
+
+				MyFile.close();
+			}
+
+			return vClients;
+		}
+
+		void PrintClientRecord(sClient Client)
+		{
+			cout << "| " << setw(15) << left << Client.AccountNumber;
+			cout << "| " << setw(10) << left << Client.PinCode;
+			cout << "| " << setw(40) << left << Client.Name;
+			cout << "| " << setw(12) << left << Client.Phone;
+			cout << "| " << setw(12) << left << Client.AccountBalance;
+		}
+
+		void PrintAllClientsData(vector<sClient> vClients)
+		{
+			cout << "\n\t\t\t\t\tClient List (" << vClients.size() << ") Client(s).";
+			cout << "\n_______________________________________________________";
+			cout << "_________________________________________\n" << endl;
+
+			cout << "| " << left << setw(15) << "Account Number";
+			cout << "| " << left << setw(10) << "Pin Code";
+			cout << "| " << left << setw(40) << "Client Name";
+			cout << "| " << left << setw(12) << "Phone";
+			cout << "| " << left << setw(12) << "Balance";
+			cout << "\n_______________________________________________________";
+			cout << "_________________________________________\n" << endl;
+
+			for (sClient Client : vClients)
+			{
+				PrintClientRecord(Client);
+				cout << endl;
+			}
+
+			cout << "\n_______________________________________________________";
+			cout << "_________________________________________\n" << endl;
+		}
+
+		int main()
+		{
+			vector<sClient> vClients = LoadCleintsDataFromFile(ClientsFileName);
+			PrintAllClientsData(vClients);
+			system("pause>0");
+
 			return 0;
 		}
 	};
